@@ -3,6 +3,8 @@ package IPL;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class IPLAnalyser {
 
@@ -15,6 +17,4 @@ public class IPLAnalyser {
         dataList.sort(sortMode.comparator);
         return dataList;
     }
-
-
 }
