@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class IPLAnalyser {
 
     public ArrayList<IPLDAO> loadRunsCSV(String csvFilePath) throws IOException {
-        List<IPLRunsCSV> iplRunsData = new IPLLoader().loadIplCSV(csvFilePath, IPLRunsCSV.class);
+        List<IplRunsCSV> iplRunsData = new IPLLoader().loadIplCSV(csvFilePath, IplRunsCSV.class);
         return iplRunsData.stream().map(IPLDAO::new).collect(Collectors.toCollection(ArrayList::new));
     }
 

@@ -1,8 +1,6 @@
 package IPL;
 
 public class IPLDAO {
-    public class IPLDAO {
-
         private String PLAYER;
         private Integer Mat;
         private Integer Runs;
@@ -15,7 +13,7 @@ public class IPLDAO {
 
         }
 
-        public IPLDAO(IPLRunsCSV IPLRunsCSV) {
+        public IPLDAO(IplRunsCSV IPLRunsCSV) {
             this.PLAYER = IPLRunsCSV.PLAYER;
             this.Mat = IPLRunsCSV.Mat;
             this.Runs = IPLRunsCSV.Runs;
@@ -24,5 +22,8 @@ public class IPLDAO {
             this.Fours = IPLRunsCSV.Fours;
             this.Sixes = IPLRunsCSV.Sixes;
         }
+
+    public Double getAvg() {
     }
 }
+
