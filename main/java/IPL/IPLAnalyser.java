@@ -1,8 +1,20 @@
 package IPL;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class IPLAnalyser {
-    public void loadRunsCSV(String csvFilePath) {
 
+    public ArrayList<IPLDAO> loadRunsCSV(String csvFilePath) throws IOException {
+        List<IPLRunsCSV> iplRunsData = new IPLLoader().loadIplCSV(csvFilePath, IPLRunsCSV.class);
+        return iplRunsData.stream().map(IPLDAO::new).collect(Collectors.toCollection(ArrayList::new));
     }
-}
 
+    public ArrayList sort(ArrayList<IPLDAO> dataList, IPLSortMode sortMode) {
+        dataList.sort(sortMode.comparator);
+        return dataList;
+    }
+
+
+}
