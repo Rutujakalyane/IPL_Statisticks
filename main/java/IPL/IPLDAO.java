@@ -22,8 +22,6 @@ public class IPLDAO {
             this.Fours = IPLRunsCSV.Fours;
             this.Sixes = IPLRunsCSV.Sixes;
         }
-
-    public Double getAvg() {
-    }
+        
 }
 
