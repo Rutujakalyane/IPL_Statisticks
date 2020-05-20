@@ -23,7 +23,7 @@ public class IPLTest {
     public void givenIPLMOstRunsCSVFile_WhenSortedOnAvg_ShouldReturnCorrectDesiredSortedData() {
         try {
             IPLAnalyser iplAnalyser = new IPLAnalyser();
-            iplAnalyser.loadIPLMostRunsData(IplRunsCSV);
+            iplAnalyser.loadIPLMostRunsData(IPL_PLAYERS_RUNS_CSV);
             String iplPLayersRecords = iplAnalyser.getAvgWiseSortedIPLPLayersRecords();
             IplRunsCSV[] iplRunCSV = new Gson().fromJson(iplPLayersRecords, IplRunsCSV[].class);
             Assert.assertEquals("MS Dhoni", iplRunCSV[iplRunCSV.length - 1].player);
