@@ -1,36 +1,35 @@
 package IPL;
 
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class IPLTest {
     static public String IPL_PLAYERS_RUNS_CSV = ".src/test/resources/IPL2019FactsheetMostRuns.csv";
     static public String IPL_PLAYERS_SAMPLE_RUNS_CSV = ".src/test/resources/IPL2019FactsheetMostWkts.csv";
 
     @Test
-    public void givenMethod_WhenReadingCSV_ShouldReturnPlayersList() {
+    public void givenIPLMOstRunsCSVFile_ShouldReturnCorrectRecords() {
         try {
-            List runs = IPLAnalyser.loadRunsCSV(IPL_PLAYERS_SAMPLE_RUNS_CSV);
-            Assert.assertEquals(5, runs.size());
-        } catch (IOException e) {
+            IPLAnalyser iplAnalyser = new IPLAnalyser();
+            int iplRecords = iplAnalyser.loadIPLMostRunsData(IPL_PLAYERS_RUNS_CSV);
+            Assert.assertEquals(101, iplRecords);
+        } catch (IPLException e) {
             e.printStackTrace();
         }
-    }
 
+    }
     @Test
-    public void givenBatsmenCSV_WhenSorted_ShouldReturnListByAverage() {
+    public void givenIPLMOstRunsCSVFile_WhenSortedOnAvg_ShouldReturnCorrectDesiredSortedData() {
         try {
-            ArrayList<IPLDAO> batsmenList = IPLAnalyser.loadRunsCSV(IPL_PLAYERS_SAMPLE_RUNS_CSV);
-            ArrayList<IPLDAO> sortedList = IPLAnalyser.sort(batsmenList, IPLSortMode.AVERAGE);
-            Assert.assertEquals((Double) 69.2, sortedList.get(0).getAvg());
-        } catch (IOException e) {
+            IPLAnalyser iplAnalyser = new IPLAnalyser();
+            iplAnalyser.loadIPLMostRunsData(IplRunsCSV);
+            String iplPLayersRecords = iplAnalyser.getAvgWiseSortedIPLPLayersRecords();
+            IplRunsCSV[] iplRunCSV = new Gson().fromJson(iplPLayersRecords, IplRunsCSV[].class);
+            Assert.assertEquals("MS Dhoni", iplRunCSV[iplRunCSV.length - 1].player);
+        } catch (IPLException e) {
             e.printStackTrace();
         }
+
     }
-
-
-}
+    }

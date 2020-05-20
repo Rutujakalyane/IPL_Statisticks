@@ -1,19 +1,44 @@
 package IPL;
 
-public class IplRunsCSV {
-        public String POS;
-        public String PLAYER;
-        public int Mat;
-        public int Inns;
-        public int NO;
-        public int Runs;
-        public String HS;
-        public double Avg;
-        public int BF;
-        public double SR;
-        public int Century;
-        public int Fifty;
-        public int Fours;
-        public int Sixes;
+import com.opencsv.bean.CsvBindByName;
 
+public class IplRunsCSV {
+        @CsvBindByName(column = "PLAYER", required = true)
+        public String player;
+
+        @CsvBindByName(column = "Mat", required = true)
+        public int match;
+
+        @CsvBindByName(column = "Inns", required = true)
+        public int innings;
+
+        @CsvBindByName(column = "Runs", required = true)
+        public int run;
+
+        @CsvBindByName(column = "HS", required = true)
+        public String highScore;
+
+        @CsvBindByName(column = "Avg")
+        public double avg;
+
+        @CsvBindByName(column = "SR")
+        public double strikeRate;
+
+        @CsvBindByName(column = "100", required = true)
+        public int centuary;
+
+        @CsvBindByName(column = "50", required = true)
+        public int HalfCentuary;
+
+        @CsvBindByName(column = "4s", required = true)
+        public int fours;
+
+        @CsvBindByName(column = "6s", required = true)
+        public int six;
+
+        public IplRunsCSV(IplRunsCSV iplRunCSVS) {
+        }
+
+        public IplRunsCSV() {
+        }
 }
