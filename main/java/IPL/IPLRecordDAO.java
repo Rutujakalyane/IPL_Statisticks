@@ -25,6 +25,17 @@ class IPLRecordDAO {
         six = mostRunCSV.six;
     }
 
+    public IPLRecordDAO(MostWktsCSV mostWktsCSV) {
+        player = mostWktsCSV.player;
+        runs = mostWktsCSV.runs;
+        strikeRate = mostWktsCSV.strikeRate;
+        average = mostWktsCSV.average;
+        wkts = mostWktsCSV.wkts;
+        fourWkts = mostWktsCSV.fourWkts;
+        fiveWkts = mostWktsCSV.fiveWkts;
+
+    }
+
    public IPLRecordDAO(String player, int runs, double strikeRate, double average, int fours, int six, int wkts, int fourWkts, int fiveWkts) {
         this.player = player;
         this.runs = runs;
@@ -36,5 +47,6 @@ class IPLRecordDAO {
         this.fourWkts = fourWkts;
         this.fiveWkts = fiveWkts;
     }
+
 }
 

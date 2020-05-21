@@ -12,33 +12,48 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class IPLAnalyser {
-    Map< String, IplRunsCSV> runCSVMap = new HashMap<>();
+    Map< String, IPLRecordDAO> runCSVMap = new HashMap<>();
     private SortByField.Parameter parameter;
-
-    public int loadIPLMostRunsData(String csvFilePath) throws IPLException {
+    public <T>int loadIPLMostRunsData(String csvFilePath) throws IPLException {
         int count = 0;
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<IplRunsCSV> mostRunCSVIterator = csvBuilder.getIterator(reader, IplRunsCSV.class);
-            while (mostRunCSVIterator.hasNext()) {
-                IplRunsCSV mostRunCSV = mostRunCSVIterator.next();
-                runCSVMap.put(mostRunCSV.player, mostRunCSV);
-                count++;
-            }
-            return count;
+            Iterator mostRunCSVIterator = csvBuilder.getIterator(reader, IplRunsCSV.class);
+            Iterable<T> mostRunCSVIterable = () -> mostRunCSVIterator;
+            StreamSupport.stream(mostRunCSVIterable.spliterator(), false)
+                    .map(IplRunsCSV.class::cast)
+                    .forEach(mostRunCSV -> runCSVMap.put(mostRunCSV.player, new IPLRecordDAO(mostRunCSV)));
+
+            return runCSVMap.size();
         } catch (IOException e) {
             throw new IPLException(e.getMessage(), IPLException.ExceptionType.NO_CRICKET_DATA);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | CensusAnalyserException e) {
             throw new IPLException(e.getMessage(), IPLException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
-        } catch (CensusAnalyserException e) {
-            throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_PROBLEM);
+        }
+    }
+    public <T>int loadIPLMostWktsData(String csvFilePath) throws IPLException {
+        int count = 0;
+        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
+            ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
+            Iterator mostRunCSVIterator = csvBuilder.getIterator(reader, MostWktsCSV.class);
+            Iterable<T> mostRunCSVIterable = () -> mostRunCSVIterator;
+            StreamSupport.stream(mostRunCSVIterable.spliterator(), false)
+                    .map(MostWktsCSV.class::cast)
+                    .forEach(mostWktsCSV -> runCSVMap.put(mostWktsCSV.player, new IPLRecordDAO(mostWktsCSV)));
+            return runCSVMap.size();
+        } catch (IOException e) {
+            throw new IPLException(e.getMessage(), IPLException.ExceptionType.NO_CRICKET_DATA);
+        } catch (RuntimeException | CensusAnalyserException e) {
+            throw new IPLException(e.getMessage(), IPLException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
         }
     }
 
+
     public String getFieldWiseSortedIPLPLayersRecords(SortByField.Parameter parameter) throws IPLException {
-        Comparator<IplRunsCSV> censusComparator = null;
+        Comparator<IPLRecordDAO> censusComparator = null;
         if (runCSVMap == null || runCSVMap.size() == 0) {
             throw new IPLException("NO_CENSUS_DATA", IPLException.ExceptionType.NO_CRICKET_DATA);
         }
