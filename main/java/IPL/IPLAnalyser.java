@@ -17,17 +17,13 @@ public class IPLAnalyser {
     Map< String, IplRunsCSV> runCSVMap = new HashMap<>();
     private SortByField.Parameter parameter;
 
-    public IPLAnalyser(SortByField.Parameter parameter) {
-        this.parameter = parameter;
-    }
-
-    public <E> int loadIPLMostRunsData(String csvFilePath, Class<E> cricketCSVClass) throws IPLException {
+    public int loadIPLMostRunsData(String csvFilePath) throws IPLException {
         int count = 0;
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<E> csvIterator = csvBuilder.getIterator(reader, cricketCSVClass);
-            while (csvIterator.hasNext()) {
-                IplRunsCSV mostRunCSV = (IplRunsCSV) csvIterator.next();
+            Iterator<IplRunsCSV> mostRunCSVIterator = csvBuilder.getIterator(reader, IplRunsCSV.class);
+            while (mostRunCSVIterator.hasNext()) {
+                IplRunsCSV mostRunCSV = mostRunCSVIterator.next();
                 runCSVMap.put(mostRunCSV.player, mostRunCSV);
                 count++;
             }
@@ -37,9 +33,8 @@ public class IPLAnalyser {
         } catch (RuntimeException e) {
             throw new IPLException(e.getMessage(), IPLException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
         } catch (CensusAnalyserException e) {
-            e.printStackTrace();
-        }            return count;
-
+            throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_PROBLEM);
+        }
     }
 
     public String getAvgWiseSortedIPLPLayersRecords(SortByField.Parameter parameter) throws IPLException {
@@ -48,7 +43,7 @@ public class IPLAnalyser {
             throw new IPLException("NO_CENSUS_DATA", IPLException.ExceptionType.NO_CRICKET_DATA);
         }
         censusComparator = SortByField.getParameter(parameter);
-        ArrayList runCSVList = runCSVMap.values().stream().
+        ArrayList runCSVList =  runCSVMap.values().stream().
                 sorted(censusComparator).collect(Collectors.toCollection(ArrayList::new));
 
         String sortedStateCensusJson = new Gson().toJson(runCSVList);

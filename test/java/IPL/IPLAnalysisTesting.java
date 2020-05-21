@@ -12,9 +12,9 @@ public  class IPLAnalysisTesting {
     @Test
     public void givenIPLMOstRunsCSVFile_ShouldReturnCorrectRecords() {
         try {
-            IPLAnalyser iplAnalyser = new IPLAnalyser(parameter);
+            IPLAnalyser iplAnalyser = new IPLAnalyser();
             int iplRecords = iplAnalyser.loadIPLMostRunsData(IPL_MOST_RUNS_CSV_FILE_PATH);
-            Assert.assertEquals(101, iplRecords);
+            Assert.assertEquals(100, iplRecords);
         } catch (IPLException e) {
             e.printStackTrace();
         }
@@ -23,7 +23,7 @@ public  class IPLAnalysisTesting {
     @Test
     public void givenIPLMOstRunsCSVFile_WhenSortedOnAvg_ShouldReturnCorrectDesiredSortedData() {
         try {
-            IPLAnalyser iplAnalyser = new IPLAnalyser(parameter);
+            IPLAnalyser iplAnalyser = new IPLAnalyser();
             iplAnalyser.loadIPLMostRunsData(IPL_MOST_RUNS_CSV_FILE_PATH);
             String iplpLayersRecords = iplAnalyser.getAvgWiseSortedIPLPLayersRecords(SortByField.Parameter.AVG);
             IplRunsCSV[] mostRunCSVS = new Gson().fromJson(iplpLayersRecords, IplRunsCSV[].class);
@@ -37,7 +37,7 @@ public  class IPLAnalysisTesting {
     @Test
     public void givenIPLMOstRunsCSVFile_WhenSortedOnStrikeRate_ShouldReturnCorrectDesiredSortedData() {
         try {
-            IPLAnalyser iplAnalyser = new IPLAnalyser(parameter);
+            IPLAnalyser iplAnalyser = new IPLAnalyser();
             iplAnalyser.loadIPLMostRunsData(IPL_MOST_RUNS_CSV_FILE_PATH);
             String iplpLayersRecords = iplAnalyser.getAvgWiseSortedIPLPLayersRecords(SortByField.Parameter.STRIKERATE);
             IplRunsCSV[] mostRunCSVS = new Gson().fromJson(iplpLayersRecords, IplRunsCSV[].class);

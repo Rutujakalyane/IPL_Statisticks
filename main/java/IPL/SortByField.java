@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SortByField {
-        static Map<Parameter, Comparator> sortParameterComparator = new HashMap<>();
+    static Map<Parameter, Comparator> sortParameterComparator = new HashMap<>();
 
-        public enum Parameter {
-            AVG, STRIKERATE, CENTUARY, FOURS, HALFCENTUARY, HIGHSCORE, SIX, RUN;
-        }
+    public enum Parameter {
+        AVG, STRIKERATE, CENTUARY, FOURS, HALFCENTUARY, HIGHSCORE, SIX, RUN , Six_AND_Fours;
+    }
 
-        SortByField() {
+    SortByField() {
 
     }
-        public static Comparator getParameter(SortByField.Parameter parameter) {
+    public static Comparator getParameter(SortByField.Parameter parameter) {
 
         Comparator<IplRunsCSV> avgComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.avg);
         Comparator<IplRunsCSV> strikeRateComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.strikeRate);
@@ -33,11 +33,11 @@ public class SortByField {
         sortParameterComparator.put(Parameter.HIGHSCORE, highScoreComparator);
         sortParameterComparator.put(Parameter.SIX, sixComparator);
         sortParameterComparator.put(Parameter.RUN, runComparator);
+        sortParameterComparator.put(Parameter.Six_AND_Fours, new SortFieldComparator());
 
 
         Comparator<IplRunsCSV> comparator = sortParameterComparator.get(parameter);
 
         return comparator;
     }
-    }
-
+}
