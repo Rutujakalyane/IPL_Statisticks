@@ -1,9 +1,9 @@
-
 package IPL;
 
 public class IPLException extends Exception {
+
     public enum ExceptionType {
-    FILE_PROBLEM,NO_CRICKET_DATA, CSV_FILE_INTERNAL_ISSUES
+         NO_IPL_DATA, IPL_FILE_INTERNAL_ISSUES, INVALID_COUNTRY,IPL_FILE_PROBLEM;
     }
 
     public IPLException.ExceptionType type;

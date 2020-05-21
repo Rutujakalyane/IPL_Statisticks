@@ -159,5 +159,29 @@ public  class IPLAnalysisTesting {
             e.printStackTrace();
         }
     }
+    @Test
+    public void givenIPLMOstWktsCSVFile_WhenSortedOnWktsWithAvg_ShouldReturnCorrectDesiredSortedData() {
+        try {
+            IPLAnalyser iplAnalyser = new IPLAnalyser(IPLAnalyser.IPLEntity.BOWLING);
+            iplAnalyser.loadIPLData(IPL_MOST_WKTS_CSV_FILE_PATH);
+            String iplpLayersRecords = iplAnalyser.getFieldWiseSortedIPLPLayersRecords(SortByField.Parameter.WKT_WITH_AVG);
+            MostWktsCSV[] mostRunCSVS = new Gson().fromJson(iplpLayersRecords, MostWktsCSV[].class);
+            Assert.assertEquals("Imran Tahir", mostRunCSVS[mostRunCSVS.length - 1].player);
+        } catch (IPLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void givenIPLCSVFile_WhenSortedOnBattingAndBowlingAvg_ShouldReturnCorrectDesiredSortedData() {
+        try {
+            IPLAnalyser iplAnalyser = new IPLAnalyser(IPLEntity.BATING);
+            iplAnalyser.loadIPLData(IPL_MOST_RUNS_CSV_FILE_PATH, IPL_MOST_WKTS_CSV_FILE_PATH);
+            String iplpLayersRecords = iplAnalyser.getFieldWiseSortedIPLPLayersRecords(SortByField.Parameter.BATTING_BOWLING_AVERAGE);
+            IplRunsCSV[] mostRunCSVS = new Gson().fromJson(iplpLayersRecords, IplRunsCSV[].class);
+            Assert.assertEquals("Andre Russell", mostRunCSVS[mostRunCSVS.length - 1].player);
+        } catch (IPLException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
