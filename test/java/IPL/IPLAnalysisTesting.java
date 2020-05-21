@@ -84,6 +84,18 @@ public  class IPLAnalysisTesting {
         } catch (IPLException e) {
             e.printStackTrace();
         }
+    }
+    @Test
+    public void givenIPLMOstRunsCSVFile_WhenSortedOnRunWithAvg_ShouldReturnCorrectDesiredSortedData() {
+        try {
+            IPLAnalyser iplAnalyser = new IPLAnalyser();
+            iplAnalyser.loadIPLMostRunsData(IPL_MOST_RUNS_CSV_FILE_PATH);
+            String iplpLayersRecords = iplAnalyser.getFieldWiseSortedIPLPLayersRecords(SortByField.Parameter.RUN_WITH_AVG);
+            IplRunsCSV[] mostRunCSVS = new Gson().fromJson(iplpLayersRecords, IplRunsCSV[].class);
+            Assert.assertEquals("David Warner ", mostRunCSVS[mostRunCSVS.length - 1].player);
+        } catch (IPLException e) {
+            e.printStackTrace();
+        }
 
     }
 }
