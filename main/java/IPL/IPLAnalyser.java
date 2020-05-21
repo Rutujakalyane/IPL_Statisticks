@@ -37,7 +37,7 @@ public class IPLAnalyser {
         }
     }
 
-    public String getAvgWiseSortedIPLPLayersRecords(SortByField.Parameter parameter) throws IPLException {
+    public String getFieldWiseSortedIPLPLayersRecords(SortByField.Parameter parameter) throws IPLException {
         Comparator<IplRunsCSV> censusComparator = null;
         if (runCSVMap == null || runCSVMap.size() == 0) {
             throw new IPLException("NO_CENSUS_DATA", IPLException.ExceptionType.NO_CRICKET_DATA);
