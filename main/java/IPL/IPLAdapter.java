@@ -1,8 +1,8 @@
 package IPL;
 
-import CSVBuilder.CSVBuilderException;
 import CSVBuilder.CSVBuilderFactory;
 import CSVBuilder.ICSVBuilder;
+import exception.CensusAnalyserException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.stream.StreamSupport;
 
 public abstract class IPLAdapter {
-    public abstract Map<String, IPLRecordDAO> loadIPLData(IPLAnalyser.IPLEntity iplEntity, String csvFilePath) throws IPLCSVException;
+    public abstract Map<String, IPLRecordDAO> loadIPLData(IPLAnalyser.IPLEntity iplEntity, String csvFilePath) throws IPLException;
 
     public <T> Map<String, IPLRecordDAO> loadIPLData(Class<T> iplCSVClass, String csvFilePath) throws IPLException {
         Map<String, IPLRecordDAO> iplRecordDAOMap = new HashMap<>();
@@ -35,10 +35,8 @@ public abstract class IPLAdapter {
 
         } catch (IOException e) {
             throw new IPLException(e.getMessage(), IPLException.ExceptionType.NO_CRICKET_DATA);
-        }  catch (RuntimeException e) {
+        }  catch (RuntimeException | CensusAnalyserException e) {
             throw new IPLException(e.getMessage(), IPLException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
-        } catch (CSVBuilderException e) {
-            throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_PROBLEM);
         }
     }
 
