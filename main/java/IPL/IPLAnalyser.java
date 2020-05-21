@@ -22,7 +22,8 @@ public class IPLAnalyser  {
     }
 
     public IPLAnalyser() {
-        this.runCSVMap = new HashMap<String, IPLRecordDAO>();
+        this.runCSVMap = new HashMap<>();
+
     }
 
     public <T>int loadIPLData(String csvFilePath) throws IPLException {
