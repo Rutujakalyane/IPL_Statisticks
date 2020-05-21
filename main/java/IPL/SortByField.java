@@ -8,7 +8,8 @@ public class SortByField {
     static Map<Parameter, Comparator> sortParameterComparator = new HashMap<>();
 
     public enum Parameter {
-        AVG, STRIKERATE, CENTUARY, FOURS, HALFCENTUARY, HIGHSCORE, SIX, RUN , Six_AND_Fours,SIX_AND_FOURS_WITH_STRIKERATE;
+        AVG, STRIKERATE, CENTUARY, FOURS, HALFCENTUARY, HIGHSCORE, SIX, RUN , Six_AND_Fours,
+        SIX_AND_FOURS_WITH_STRIKERATE,AVG_WITH_STRIKERATE;
     }
 
     SortByField() {
