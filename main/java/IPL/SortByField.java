@@ -8,8 +8,8 @@ public class SortByField {
     static Map<Parameter, Comparator> sortParameterComparator = new HashMap<>();
 
     public enum Parameter {
-        AVG, STRIKERATE, CENTUARY, FOURS, HALFCENTUARY, HIGHSCORE, SIX, RUN , SIX_AND_FOURS,
-        SIX_AND_FOURS_WITH_STRIKERATE,AVG_WITH_STRIKERATE,RUN_WITH_AVG, ECONOMY
+        AVG, STRIKERATE, FOURS,  SIX, RUN , SIX_AND_FOURS,
+        SIX_AND_FOURS_WITH_STRIKERATE,AVG_WITH_STRIKERATE,RUN_WITH_AVG, ECONOMY,FIVEWKT_FOURWKT_STRIKERATE;
     }
 
     SortByField() {
@@ -34,6 +34,7 @@ public class SortByField {
         sortParameterComparator.put(Parameter.AVG_WITH_STRIKERATE, avgComparator.thenComparing(strikeRateComparator));
         sortParameterComparator.put(Parameter.RUN_WITH_AVG, runComparator.thenComparing(avgComparator));
         sortParameterComparator.put(Parameter.ECONOMY, runComparator.thenComparing(ecoComparator));
+        sortParameterComparator.put(Parameter.FIVEWKT_FOURWKT_STRIKERATE,new Sort5wAnd4wComparator().reversed().thenComparing(strikeRateComparator));
 
 
         Comparator<IplRunsCSV> comparator = sortParameterComparator.get(parameter);
