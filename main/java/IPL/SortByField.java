@@ -8,8 +8,8 @@ public class SortByField {
     static Map<Parameter, Comparator> sortParameterComparator = new HashMap<>();
 
     public enum Parameter {
-        AVG, STRIKERATE, CENTUARY, FOURS, HALFCENTUARY, HIGHSCORE, SIX, RUN , Six_AND_Fours,
-        SIX_AND_FOURS_WITH_STRIKERATE,AVG_WITH_STRIKERATE,RUN_WITH_AVG
+        AVG, STRIKERATE, CENTUARY, FOURS, HALFCENTUARY, HIGHSCORE, SIX, RUN , SIX_AND_FOURS,
+        SIX_AND_FOURS_WITH_STRIKERATE,AVG_WITH_STRIKERATE,RUN_WITH_AVG, ECONOMY
     }
 
     SortByField() {
@@ -17,24 +17,23 @@ public class SortByField {
     }
     public static Comparator getParameter(SortByField.Parameter parameter) {
 
-        Comparator<IplRunsCSV> avgComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.avg);
-        Comparator<IplRunsCSV> strikeRateComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.strikeRate);
-        Comparator<IplRunsCSV> centuaryComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.centuary);
-        Comparator<IplRunsCSV> foursComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.fours);
-        Comparator<IplRunsCSV> HalfCentuaryComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.halfCentuary);
-        Comparator<IplRunsCSV> highScoreComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.highScore);
-        Comparator<IplRunsCSV> sixComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.six);
-        Comparator<IplRunsCSV> runComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.run);
+        Comparator<IPLRecordDAO> avgComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.average);
+        Comparator<IPLRecordDAO> strikeRateComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.strikeRate);
+        Comparator<IPLRecordDAO> foursComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.fours);
+        Comparator<IPLRecordDAO> sixComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.six);
+        Comparator<IPLRecordDAO> runComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.runs);
+        Comparator<IPLRecordDAO> ecoComparator = Comparator.comparing(mostRunCSV -> mostRunCSV.economy);
 
         sortParameterComparator.put(Parameter.AVG, avgComparator);
         sortParameterComparator.put(Parameter.STRIKERATE, strikeRateComparator);
-        sortParameterComparator.put(Parameter.CENTUARY, centuaryComparator);
         sortParameterComparator.put(Parameter.FOURS, foursComparator);
-        sortParameterComparator.put(Parameter.HALFCENTUARY, HalfCentuaryComparator);
-        sortParameterComparator.put(Parameter.HIGHSCORE, highScoreComparator);
         sortParameterComparator.put(Parameter.SIX, sixComparator);
         sortParameterComparator.put(Parameter.RUN, runComparator);
-        sortParameterComparator.put(Parameter.Six_AND_Fours, new SortFieldComparator());
+        sortParameterComparator.put(Parameter.SIX_AND_FOURS, new SortFieldComparator());
+        sortParameterComparator.put(Parameter.SIX_AND_FOURS_WITH_STRIKERATE, new SortFieldComparator().thenComparing(strikeRateComparator));
+        sortParameterComparator.put(Parameter.AVG_WITH_STRIKERATE, avgComparator.thenComparing(strikeRateComparator));
+        sortParameterComparator.put(Parameter.RUN_WITH_AVG, runComparator.thenComparing(avgComparator));
+        sortParameterComparator.put(Parameter.ECONOMY, runComparator.thenComparing(ecoComparator));
 
 
         Comparator<IplRunsCSV> comparator = sortParameterComparator.get(parameter);

@@ -15,6 +15,8 @@ class IPLRecordDAO {
     public int wkts;
     public int fourWkts;
     public int fiveWkts;
+    public double economy;
+
 
     public IPLRecordDAO(IplRunsCSV mostRunCSV) {
         player = mostRunCSV.player;
@@ -33,6 +35,8 @@ class IPLRecordDAO {
         wkts = mostWktsCSV.wkts;
         fourWkts = mostWktsCSV.fourWkts;
         fiveWkts = mostWktsCSV.fiveWkts;
+        economy = mostWktsCSV.economy;
+
 
     }
 
