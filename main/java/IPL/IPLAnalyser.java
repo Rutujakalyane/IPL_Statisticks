@@ -1,3 +1,4 @@
+
 package IPL;
 
 import CSVBuilder.CSVBuilderFactory;
@@ -9,43 +10,49 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class IPLAnalyser {
-    List<IplRunsCSV> runCSVList = new ArrayList<>();
+    Map< String, IplRunsCSV> runCSVMap = new HashMap<>();
+    private SortByField.Parameter parameter;
 
-    public int loadIPLMostRunsData(String csvFilePath) throws IPLException {
+    public IPLAnalyser(SortByField.Parameter parameter) {
+        this.parameter = parameter;
+    }
+
+    public <E> int loadIPLMostRunsData(String csvFilePath, Class<E> cricketCSVClass) throws IPLException {
         int count = 0;
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<IplRunsCSV> mostRunCSVIterator = csvBuilder.getIterator(reader, IplRunsCSV.class);
-            while (mostRunCSVIterator.hasNext()) {
-                IplRunsCSV iplRunCSV = mostRunCSVIterator.next();
-                runCSVList.add(iplRunCSV);
+            Iterator<E> csvIterator = csvBuilder.getIterator(reader, cricketCSVClass);
+            while (csvIterator.hasNext()) {
+                IplRunsCSV mostRunCSV = (IplRunsCSV) csvIterator.next();
+                runCSVMap.put(mostRunCSV.player, mostRunCSV);
                 count++;
             }
             return count;
         } catch (IOException e) {
             throw new IPLException(e.getMessage(), IPLException.ExceptionType.NO_CRICKET_DATA);
-        } catch (RuntimeException | CensusAnalyserException e) {
+        } catch (RuntimeException e) {
             throw new IPLException(e.getMessage(), IPLException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }            return count;
+
+    }
+
+    public String getAvgWiseSortedIPLPLayersRecords(SortByField.Parameter parameter) throws IPLException {
+        Comparator<IplRunsCSV> censusComparator = null;
+        if (runCSVMap == null || runCSVMap.size() == 0) {
+            throw new IPLException("NO_CENSUS_DATA", IPLException.ExceptionType.NO_CRICKET_DATA);
         }
-    }
+        censusComparator = SortByField.getParameter(parameter);
+        ArrayList runCSVList = runCSVMap.values().stream().
+                sorted(censusComparator).collect(Collectors.toCollection(ArrayList::new));
 
-    public String getAvgWiseSortedIPLPLayersRecords() {
-        runCSVList.sort(Comparator.comparing(mostRunCSV -> mostRunCSV.avg));
-        String sortedStateCensusJson = new Gson().toJson(runCSVList);
-        return  sortedStateCensusJson;
-
-    }
-
-    public String getStrikeWiseWiseSortedIPLPLayersRecords() {
-        runCSVList.sort(Comparator.comparing(mostRunCSV -> mostRunCSV.strikeRate));
         String sortedStateCensusJson = new Gson().toJson(runCSVList);
         return  sortedStateCensusJson;
     }
+
 }
-

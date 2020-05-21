@@ -1,3 +1,4 @@
+
 package IPL;
 
 public class IPLException extends Exception {
@@ -22,3 +23,4 @@ public class IPLException extends Exception {
         this.type = type;
     }
 }
+

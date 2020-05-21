@@ -28,7 +28,7 @@ public class IplRunsCSV {
         public int centuary;
 
         @CsvBindByName(column = "50", required = true)
-        public int HalfCentuary;
+        public int halfCentuary;
 
         @CsvBindByName(column = "4s", required = true)
         public int fours;
@@ -36,9 +36,26 @@ public class IplRunsCSV {
         @CsvBindByName(column = "6s", required = true)
         public int six;
 
-        public IplRunsCSV(IplRunsCSV iplRunCSVS) {
+
+        public IplRunsCSV(IplRunsCSV mostRunCSV) {
+
         }
 
         public IplRunsCSV() {
         }
+
+        public IplRunsCSV(String player, int match, int innings, int run, String highScore, double avg, double strikeRate, int centuary, int halfCentuary, int fours, int six) {
+                this.player = player;
+                this.match = match;
+                this.innings = innings;
+                this.run = run;
+                this.highScore = highScore;
+                this.avg = avg;
+                this.strikeRate = strikeRate;
+                this.centuary = centuary;
+                this.halfCentuary = halfCentuary;
+                this.fours = fours;
+                this.six = six;
+        }
+
 }
