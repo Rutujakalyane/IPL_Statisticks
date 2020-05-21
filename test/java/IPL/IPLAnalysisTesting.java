@@ -47,5 +47,17 @@ public  class IPLAnalysisTesting {
         }
 
     }
-    
+    @Test
+    public void givenIPLMOstRunsCSVFile_WhenSortedOn4SAnd6s_ShouldReturnCorrectDesiredSortedData() {
+        try {
+            IPLAnalyser iplAnalyser = new IPLAnalyser();
+            iplAnalyser.loadIPLMostRunsData(IPL_MOST_RUNS_CSV_FILE_PATH);
+            String iplpLayersRecords = iplAnalyser.getAvgWiseSortedIPLPLayersRecords(SortByField.Parameter.Six_AND_Fours);
+            IplRunsCSV[] mostRunCSVS = new Gson().fromJson(iplpLayersRecords, IplRunsCSV[].class);
+            Assert.assertEquals("Andre Russell", mostRunCSVS[mostRunCSVS.length - 1].player);
+        } catch (IPLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
